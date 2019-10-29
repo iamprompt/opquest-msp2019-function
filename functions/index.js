@@ -4,7 +4,12 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 // const app = express();
 
-admin.initializeApp(functions.config().firebase)
+const serviceAccount = require("./utils/mumsp-op2019-firebase-adminsdk-01vw1-70bfbbbf11.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://mumsp-op2019.firebaseio.com"
+});
 
 const db = admin.firestore()
 
@@ -39,7 +44,9 @@ async function randomtoDB(uid) {
 }
 
 exports.questStatus = functions.https.onCall((data, context) => {
-  const user = db.collection('users').doc(context.auth.uid)
+  const uid = context.auth.uid
+  console.log(context.auth.uid)
+  const user = db.collection('users').doc(uid)
   user
     .get()
     .then(doc => {
@@ -50,10 +57,10 @@ exports.questStatus = functions.https.onCall((data, context) => {
           Q1status: doc.data().Q1status,
           Q2status: doc.data().Q2status,
           Q3status: doc.data().Q3status,
-          Q4status: doc.data().Q4status
+          Q4status: doc.data().Q4status,
         }
         console.log(Qstatus)
-        return 
+        return
       }
     })
     .catch(err => {
