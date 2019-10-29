@@ -10,9 +10,7 @@ const db = admin.firestore()
 exports.randomQuest = functions.auth.user().onCreate(user => {
   const uid = user.uid
 
-  randomtoDB(uid)
-
-  return null
+  return randomtoDB(uid)
 })
 
 async function randomtoDB(uid) {
