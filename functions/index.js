@@ -39,7 +39,8 @@ async function randomtoDB(uid) {
 }
 
 exports.questStatus = functions.https.onCall((data, context) => {
-  const uid = context.auth.uid
+  const uid = Ja9qzGkqMuN8LN29krbFs2ZfZAe2
+  // const uid = context.auth.uid
   const user = db.collection('users').doc(uid)
   user
     .get()
