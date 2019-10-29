@@ -39,17 +39,21 @@ async function randomtoDB(uid) {
 }
 
 exports.questStatus = functions.https.onCall((data, context) => {
-  const uid = Ja9qzGkqMuN8LN29krbFs2ZfZAe2
-  // const uid = context.auth.uid
-  const user = db.collection('users').doc(uid)
+  const user = db.collection('users').doc(context.auth.uid)
   user
     .get()
     .then(doc => {
       if (!doc.exists) {
         console.log('No such document!')
       } else {
-        console.log('Document data:', doc.data())
-        return doc.data()
+        const Qstatus = {
+          Q1status: doc.data().Q1status,
+          Q2status: doc.data().Q2status,
+          Q3status: doc.data().Q3status,
+          Q4status: doc.data().Q4status
+        }
+        console.log(Qstatus)
+        return 
       }
     })
     .catch(err => {
