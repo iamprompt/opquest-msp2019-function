@@ -32,10 +32,26 @@ async function randomtoDB(uid) {
     Q1status: false,
     Q2status: false,
     Q3status: false,
-    Q4status: false
+    Q4status: false,
   })
 
-  console.log("Finish Random Quest for " + uid);
+  console.log('Finish Random Quest for ' + uid)
 }
 
-
+exports.questStatus = functions.https.onCall((data, context) => {
+  const uid = context.auth.uid
+  const user = db.collection('users').doc(uid)
+  user
+    .get()
+    .then(doc => {
+      if (!doc.exists) {
+        console.log('No such document!')
+      } else {
+        console.log('Document data:', doc.data())
+        return doc.data()
+      }
+    })
+    .catch(err => {
+      console.log('Error getting document', err)
+    })
+})
