@@ -1,14 +1,15 @@
 language: node_js
 node_js:
-  - "8"
+  - '8'
 branches:
   only:
-  - master # auto build and deploy in only master branch
+    - master # auto build and deploy in only master branch
 install:
-  - yarn install
-  - yarn add -D firebase-tools
+  - cd functions
+  - npm install
+  - npm install -D firebase-tools
 
-  after_success:
-- firebase use --token ${FIREBASE_TOKEN} # set firebase token
-- firebase use --add ${PROJECT_ID} # set current project
-- firebase deploy --non-interactive --only functions --token "${FIREBASE_TOKEN}" # deploy project
+script:
+  - firebase use --token ${FIREBASE_TOKEN} # set firebase token
+  - firebase use --add ${PROJECT_ID} # set current project
+  - firebase deploy --non-interactive --only functions --token "${FIREBASE_TOKEN}" # deploy project
