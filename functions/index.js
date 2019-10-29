@@ -1,18 +1,21 @@
-// import cors from 'cors'
 // import express from 'express'
+// import cors from 'cors'
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
+// const app = express();
 
 admin.initializeApp(functions.config().firebase)
 
 const db = admin.firestore()
 
+// Random Quest when Create Account
 exports.randomQuest = functions.auth.user().onCreate(user => {
   const uid = user.uid
 
   return randomtoDB(uid)
 })
 
+// Random Quest and Store in Firestore
 async function randomtoDB(uid) {
   const user = db.collection('users').doc(uid)
 
@@ -26,8 +29,13 @@ async function randomtoDB(uid) {
     rQ2: randomQ2,
     rQ3: randomQ3,
     rQ4: randomQ4,
+    Q1status: false,
+    Q2status: false,
+    Q3status: false,
+    Q4status: false
   })
 
   console.log("Finish Random Quest for " + uid);
-  
 }
+
+
