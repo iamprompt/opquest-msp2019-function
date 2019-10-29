@@ -4,12 +4,12 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 // const app = express();
 
-const serviceAccount = require("./utils/mumsp-op2019-firebase-adminsdk-01vw1-70bfbbbf11.json");
+const serviceAccount = require('./utils/mumsp-op2019-firebase-adminsdk-01vw1-70bfbbbf11.json')
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://mumsp-op2019.firebaseio.com"
-});
+  databaseURL: 'https://mumsp-op2019.firebaseio.com',
+})
 
 const db = admin.firestore()
 
@@ -45,25 +45,19 @@ async function randomtoDB(uid) {
 
 exports.questStatus = functions.https.onCall((data, context) => {
   const uid = context.auth.uid
-  console.log(context.auth.uid)
-  const user = db.collection('users').doc(uid)
-  user
+  console.log('UID: ' + uid)
+  const data = db
+    .collection('users')
+    .doc(uid)
     .get()
     .then(doc => {
       if (!doc.exists) {
-        console.log('No such document!')
+        res.send(null)
+        console.log('No document!')
       } else {
-        const Qstatus = {
-          Q1status: doc.data().Q1status,
-          Q2status: doc.data().Q2status,
-          Q3status: doc.data().Q3status,
-          Q4status: doc.data().Q4status,
-        }
-        console.log(Qstatus)
-        return
+        res.send(doc.data())
+        console.log(JSON.stringify(doc.data()))
       }
-    })
-    .catch(err => {
-      console.log('Error getting document', err)
+      return
     })
 })
