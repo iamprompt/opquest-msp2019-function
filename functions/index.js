@@ -45,6 +45,7 @@ async function randomtoDB(uid) {
 
 exports.questStatus = functions.https.onCall((data, context) => {
   const uid = context.auth.uid
+  const name = context.auth.token.name || null;
   // console.log('UID: ' + uid)
 
   const user = db
@@ -56,6 +57,7 @@ exports.questStatus = functions.https.onCall((data, context) => {
         return {result: "No Docs"}
       } else {
         const Qstatus = {
+          name: name,
           Q1status: doc.data().Q1status,
           Q2status: doc.data().Q2status,
           Q3status: doc.data().Q3status,
