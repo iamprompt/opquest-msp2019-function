@@ -45,19 +45,28 @@ async function randomtoDB(uid) {
 
 exports.questStatus = functions.https.onCall((data, context) => {
   const uid = context.auth.uid
-  console.log('UID: ' + uid)
-  const data = db
+  // console.log('UID: ' + uid)
+
+  const user = db
     .collection('users')
-    .doc(uid)
-    .get()
-    .then(doc => {
+    .doc(uid).get()
+  return user.then(doc => {
       if (!doc.exists) {
-        res.send(null)
-        console.log('No document!')
+        console.log('No such document!')
+        return {result: "No Docs"}
       } else {
-        res.send(doc.data())
-        console.log(JSON.stringify(doc.data()))
+        const Qstatus = {
+          Q1status: doc.data().Q1status,
+          Q2status: doc.data().Q2status,
+          Q3status: doc.data().Q3status,
+          Q4status: doc.data().Q4status,
+        }
+        // const status = doc.data()
+        // console.log(status)
+        return Qstatus
       }
-      return
+    })
+    .catch(err => {
+      console.log('Error getting document', err)
     })
 })
