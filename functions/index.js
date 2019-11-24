@@ -30,7 +30,7 @@ async function randomtoDB(uid, email, Name, photo) {
 
   const nQ1 = 14
   const nQ2 = 1
-  const nQ3 = 10
+  const nQ3 = 15
   const nQ4 = 7
   const randomQ1 = Math.floor(Math.random() * (nQ1 - 1) + 1)
   const randomQ2 = Math.floor(Math.random() * (nQ2 - 1) + 1)
@@ -40,7 +40,7 @@ async function randomtoDB(uid, email, Name, photo) {
   await user.set({
     name: Name,
     email: email,
-    photo: photo,
+    photo: photo + '?width=1000&height=1000',
     rQ1: randomQ1,
     rQ2: randomQ2,
     rQ3: randomQ3,
